@@ -1,5 +1,9 @@
 # Google Gen AI SDK
 
+<!-- tech-version-badges -->
+![Python 3.10%2B](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white) ![google--genai 1.64.0](https://img.shields.io/badge/google--genai-1.64.0-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white) ![PyPI Package](https://img.shields.io/badge/PyPI-Package-3775A9?style=for-the-badge&logo=pypi&logoColor=white)
+<!-- /tech-version-badges -->
+
 [![PyPI version](https://img.shields.io/pypi/v/google-genai.svg)](https://pypi.org/project/google-genai/)
 ![Python support](https://img.shields.io/pypi/pyversions/google-genai)
 [![PyPI - Downloads](https://img.shields.io/pypi/dw/google-genai)](https://pypistats.org/packages/google-genai)
@@ -49,6 +53,7 @@ different services ([Gemini Developer API](https://ai.google.dev/gemini-api/docs
 from google import genai
 
 # Only run this block for Gemini Developer API
+
 client = genai.Client(api_key='GEMINI_API_KEY')
 ```
 
@@ -56,6 +61,7 @@ client = genai.Client(api_key='GEMINI_API_KEY')
 from google import genai
 
 # Only run this block for Vertex AI API
+
 client = genai.Client(
     vertexai=True, project='your-project-id', location='us-central1'
 )
@@ -147,6 +153,7 @@ response_2 = client.models.generate_content(
     contents='Ask a question',
 )
 # Close the sync client to release resources.
+
 client.close()
 ```
 
@@ -167,6 +174,7 @@ response_2 = await aclient.models.generate_content(
     contents='Ask a question',
 )
 # Close the async client to release resources.
+
 await aclient.aclose()
 ```
 
@@ -870,6 +878,7 @@ from google import genai
 client = genai.Client()
 
 # Create server parameters for stdio connection
+
 server_params = StdioServerParameters(
     command="npx",  # Executable
     args=["-y", "@philschmid/weather-mcp"],  # MCP Server
@@ -897,6 +906,7 @@ async def run():
             print(response.text)
 
 # Start the asyncio event loop and run the main function
+
 asyncio.run(run())
 ```
 
@@ -1201,6 +1211,7 @@ Edit image is only supported in Vertex AI.
 
 ```python
 # Edit the generated image from above
+
 from google.genai import types
 from google.genai.types import RawReferenceImage, MaskReferenceImage
 
@@ -1210,6 +1221,7 @@ raw_ref_image = RawReferenceImage(
 )
 
 # Model computes a mask of the background
+
 mask_ref_image = MaskReferenceImage(
     reference_id=2,
     config=types.MaskReferenceConfig(
@@ -1242,6 +1254,7 @@ Support for generating videos is considered public preview
 from google.genai import types
 
 # Create operation
+
 operation = client.models.generate_videos(
     model='veo-3.1-generate-preview',
     prompt='A neon hologram of a cat driving at top speed',
@@ -1253,6 +1266,7 @@ operation = client.models.generate_videos(
 )
 
 # Poll operation
+
 while not operation.done:
     time.sleep(20)
     operation = client.operations.get(operation)
@@ -1267,9 +1281,11 @@ video.show()
 from google.genai import types
 
 # Read local image (uses mimetypes.guess_type to infer mime type)
+
 image = types.Image.from_file("local/path/file.png")
 
 # Create operation
+
 operation = client.models.generate_videos(
     model='veo-3.1-generate-preview',
     # Prompt is optional if image is provided
@@ -1284,6 +1300,7 @@ operation = client.models.generate_videos(
 )
 
 # Poll operation
+
 while not operation.done:
     time.sleep(20)
     operation = client.operations.get(operation)
@@ -1301,9 +1318,11 @@ previously generated videos. Vertex supports video extension on Veo 2.0.
 from google.genai import types
 
 # Read local video (uses mimetypes.guess_type to infer mime type)
+
 video = types.Video.from_file("local/path/video.mp4")
 
 # Create operation
+
 operation = client.models.generate_videos(
     model='veo-3.1-generate-preview',
     # Prompt is optional if Video is provided
@@ -1320,6 +1339,7 @@ operation = client.models.generate_videos(
 )
 
 # Poll operation
+
 while not operation.done:
     time.sleep(20)
     operation = client.operations.get(operation)
@@ -1492,6 +1512,7 @@ The Interactions API supports server-side state management. You can continue a c
 
 ```python
 # 1. First turn
+
 interaction1 = client.interactions.create(
     model='gemini-2.5-flash',
     input='Hi, my name is Amir.'
@@ -1499,6 +1520,7 @@ interaction1 = client.interactions.create(
 print(f"Model: {interaction1.outputs[-1].text}")
 
 # 2. Second turn (passing previous_interaction_id)
+
 interaction2 = client.interactions.create(
     model='gemini-2.5-flash',
     input='What is my name?',
@@ -1516,6 +1538,7 @@ You can use specialized agents like `deep-research-pro-preview-12-2025` for comp
 import time
 
 # 1. Start the Deep Research Agent
+
 initial_interaction = client.interactions.create(
     input='Research the history of the Google TPUs with a focus on 2025 and 2026.',
     agent='deep-research-pro-preview-12-2025',
@@ -1524,6 +1547,7 @@ initial_interaction = client.interactions.create(
 print(f"Research started. Interaction ID: {initial_interaction.id}")
 
 # 2. Poll for results
+
 while True:
     interaction = client.interactions.get(id=initial_interaction.id)
     print(f"Status: {interaction.status}")
@@ -1547,6 +1571,7 @@ You can provide multimodal data (text, images, audio, etc.) in the input list.
 import base64
 
 # Assuming you have an image loaded as bytes
+
 # base64_image = ...
 
 interaction = client.interactions.create(
@@ -1566,6 +1591,7 @@ You can define custom functions for the model to use. The Interactions API handl
 
 ```python
 # 1. Define the tool
+
 def get_weather(location: str):
     """Gets the weather for a given location."""
     return f"The weather in {location} is sunny."
@@ -1584,6 +1610,7 @@ weather_tool = {
 }
 
 # 2. Send the request with tools
+
 interaction = client.interactions.create(
     model='gemini-2.5-flash',
     input='What is the weather in Mountain View, CA?',
@@ -1591,6 +1618,7 @@ interaction = client.interactions.create(
 )
 
 # 3. Handle the tool call
+
 for output in interaction.outputs:
     if output.type == 'function_call':
         print(f"Tool Call: {output.name}({output.arguments})")
@@ -1626,6 +1654,7 @@ interaction = client.interactions.create(
 )
 
 # Find the text output (not the GoogleSearchResultContent)
+
 text_output = next((o for o in interaction.outputs if o.type == 'text'), None)
 if text_output:
     print(text_output.text)
@@ -1832,6 +1861,7 @@ Vertex AI:
 
 ```python
 # Specify model and source file only, destination and job display name will be auto-populated
+
 job = client.batches.create(
     model='gemini-2.5-flash',
     src='bq://my-project.my-dataset.my-table',  # or "gs://path/to/input/data"
@@ -1844,6 +1874,7 @@ Gemini Developer API:
 
 ```python
 # Create a batch job with inlined requests
+
 batch_job = client.batches.create(
     model="gemini-2.5-flash",
     src=[{
@@ -1873,12 +1904,14 @@ Then upload the file.
 
 ```python
 # Upload the file
+
 file = client.files.upload(
     file='myrequests.json',
     config=types.UploadFileConfig(display_name='test-json')
 )
 
 # Create a batch job with file name
+
 batch_job = client.batches.create(
     model="gemini-2.5-flash",
     src="files/test-json",
@@ -1887,6 +1920,7 @@ batch_job = client.batches.create(
 
 ```python
 # Get a job by name
+
 job = client.batches.get(name=job.name)
 
 job.state
@@ -1948,6 +1982,7 @@ print(async_pager[0])
 
 ```python
 # Delete the job resource
+
 delete_job = client.batches.delete(name=job.name)
 
 delete_job
